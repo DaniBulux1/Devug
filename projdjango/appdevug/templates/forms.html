@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}
+         - ProyectoFPW
+    </title>
+</head>
+<body>
+    <div class="container">
+        <h1>{% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}</h1>
+        <div class="date-display">
+            Fecha de creación: <span id="currentDate"></span>
+        </div>
+
+        <!-- El action del formulario es dinámico: si se edita, apunta a 'editar_tutorial' con el pk;
+             si se crea, apunta a 'crear_tutorial'. -->
+        <form method="post" action="{% if tutorial %}{% url 'editar_tutorial' pk=tutorial.pk %}{% else %}{% url 'crear_tutorial' %}{% endif %}">
+            {% csrf_token %} {# Token de seguridad requerido por Django para POST #}
+
+            <!-- Campos ocultos para la información del autor (se llenarán con JS desde Firebase Auth) -->
+            <input type="hidden" id="autor_uid" name="autor_uid" value="{% if tutorial %}{{ tutorial.autor_uid }}{% endif %}">
+            <input type="hidden" id="autor_nombre" name="autor_nombre" value="{% if tutorial %}{{ tutorial.autor_nombre }}{% endif %}">
+            <input type="hidden" id="autor_foto_url" name="autor_foto_url" value="{% if tutorial %}{{ tutorial.autor_foto_url }}{% endif %}">
+
+            <div class="form-group">
+                <label for="id_titulo">{{ form.titulo.label }}:</label>
+                <!-- Renderiza el campo 'titulo' del formulario de Django -->
+                {{ form.titulo }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_contenido">{{ form.contenido.label }}:</label>
+                <div class="format-buttons">
+                    <button type="button" onclick="formatText('bold')"><b>Negrita</b></button>
+                    <button type="button" onclick="formatText('italic')"><i>Cursiva</i></button>
+                    <button type="button" onclick="formatText('code')"><code>Código</code></button>
+                </div>
+                <!-- Renderiza el campo 'contenido' del formulario de Django.
+                     El ID 'id_contenido' es el que Django asigna por defecto a un campo 'contenido'.
+                     Necesitamos que el JS de formato sepa que este es el elemento editable. -->
+                {{ form.contenido }}
+            </div>
+
+            <!-- El botón ahora es de tipo submit para enviar el formulario -->
+            <button class="preview-button" type="submit">
+                {% if tutorial %}Guardar Cambios{% else %}Previsualizar y Guardar Tutorial{% endif %}
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Espera a que el DOM esté completamente cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtiene la fecha y hora actual
+            const date = new Date();
+            // Define las opciones de formato para la fecha
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            // Muestra la fecha formateada en el elemento con id 'currentDate'
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('es-ES', options);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        const displayName = user.displayName;
+                        const photoURL = user.photoURL;
+
+                        document.getElementById("autor-nombre").textContent = displayName;
+                        document.getElementById("autor-foto-url").src = photoURL;
+                }
+});
+        });
+
+        // Función para aplicar formato al texto seleccionado en el área contenteditable
+        function formatText(command) {
+            // Asegúrate de que el ID del div contenteditable coincida con el ID de Django
+            const contentDiv = document.getElementById('id_contenido');
+            contentDiv.focus(); // Asegura que el div tenga el foco para execCommand
+
+            if (command === 'bold') {
+                document.execCommand('bold', false, null);
+            } else if (command === 'italic') {
+                document.execCommand('italic', false, null);
+            } else if (command === 'code') {
+                // Para código, envolvemos la selección en <pre><code>
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const selectedText = range.toString();
+                    const codeElement = document.createElement('pre');
+                    const codeInner = document.createElement('code');
+                    codeInner.textContent = selectedText; // Usamos textContent para escapar HTML dentro del código
+                    codeElement.appendChild(codeInner);
+
+                    range.deleteContents(); // Elimina el texto seleccionado
+                    range.insertNode(codeElement); // Inserta el nuevo elemento de código
+                } else {
+                    // Si no hay selección, inserta un bloque de código vacío para que el usuario escriba
+                    document.execCommand('insertHTML', false, '<pre><code></code></pre>');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
