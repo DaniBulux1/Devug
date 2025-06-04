@@ -1,0 +1,133 @@
+<!-- Karen Reyes -->
+ 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="auth.js" defer type="module"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+    <title>Devug</title>
+</head>
+
+<body>
+    <div class="encabezado">
+        <div class="izquierda">
+            <p>Devug</p>
+        </div>
+        <div class="centro">
+            <form class="busqueda" action="resultados.html" method="GET">
+                <input type="search" name="q" class="buscador" placeholder="Buscar...">
+                <button type="submit" class="btn-buscar">
+                    <a href="#index">&#128270;</a>
+                </button>
+            </form>
+        </div>
+        <div class="derecha">
+            <a href="perfil.html" class="button1">
+                <img class="img1" id="autor-foto-url" alt="Foto de usuario" />
+            </a>
+            <button id="btn-logOut">Cerrar sesión</button>
+        </div>
+    </div>
+    <div class="contenido">
+        <div class="seccion1">
+            <a href="home.html">&#127968; Inicio</a><br>
+            <a href="home.html">&#127908; Podcast</a><br>
+            <a href="home.html">&#127909; Videos</a><br>
+            <a href="home.html">&#128204; Etiquetas</a><br>
+            <a href="home.html">&#128187; Comparaciones de Software</a><br>
+            <a href="home.html">&#128521; Bases de datos gratuitas</a><br>
+            <a href="home.html">&#128640; DEVUG ++</a><br>
+            <a href="home.html">&#10024; Ayuda de DEVUG</a><br>
+            <a href="home.html">&#129505; Anunciate en DEVUG</a><br>
+            <a href="home.html">&#127941; Desafíos de DEVUG</a><br>
+            <p>Otros</p>
+            <a href="home.html">&#128588; Código de Conducta</a><br>
+            <a href="home.html">&#129299; Politicas de Privacidad</a><br>
+            <a href="home.html">&#127968; Términos de Uso</a><br>
+            <a href="home.html">&#128526; Sobre Nosotros</a><br>
+        </div>
+
+        <div class="seccion2">
+            {% for tutorial in tutoriales %}
+            <div class="tutorial">
+                <div class="autor">
+                    <p>Autor: {{ tutorial.autor_nombre }}</p>
+                </div>
+                <div class="titulo">
+                    <p>Título: {{ tutorial.titulo }}</p>
+                </div>
+                <div class="tags">
+                    <p>Sección de tags</p>
+                </div>
+
+                <div class="seccion-reaccion" id="react-{{ tutorial.id }}" tutorial-id="{{ tutorial.id }}">
+                        <button class="btn-reaccion">Reaccionar</button>
+                        <div class="reacciones-ocultas">
+                            <div class="opcion-reaccion" emoji-id="👍">
+                                <div class="circulo-emoji">👍</div>
+                                <span class="nombre-emoji">Me gusta</span>
+                            </div>
+                            <div class="opcion-reaccion" emoji-id="😲">
+                                <div class="circulo-emoji">😲</div>
+                                <span class="nombre-emoji">Me asombra</span>
+                            </div>
+                            <div class="opcion-reaccion" emoji-id="❤️">
+                                <div class="circulo-emoji">❤️</div>
+                                <span class="nombre-emoji">Me encanta</span>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            {% empty %}
+                <p>No hay publicaciones disponibles</p>
+            {% endfor %}
+        </div>
+        <link rel="stylesheet" href="preview.html">
+        <div class="seccion3">
+            <h3>Recursos en tendencia</h3>
+            <div class="titulosAleatorios" id="titulosAleatorios"></div>
+
+            <script>
+                const titulos = [
+                    "Deje de usar AWS.",
+                    "Registros diarios para desarrolladores: cómo un hábito de 5 minutos puede multiplicar por 10 tu producción semanal",
+                    "Cursor ahora es gratis para los estudiantes",
+                    "11 Cursos para Aprender Diseño de Sistemas y Arquitectura de Software en profundidad",
+                    "12 libros atemporales que todo programador debería leer",
+                    "De 0 a 10K ⭐: Cómo Open SaaS se convirtió en el amor de los desarrolladores repetitivos gratuitos",
+                    "Convierta su aplicación React en un cliente MCP en minutos",
+                    "10 libros de ingeniería de IA y LLM imprescindibles para desarrolladores en 2025",
+                    "9 trucos que separan a un desarrollador profesional de Typescript de un novato 😎",
+                    "5 cosas que deberían ser ilegales para el autoanfitrión",
+                    "Más allá del código: cómo crear una documentación atractiva que a los desarrolladores les guste mucho (prácticas recomendadas)",
+                    "✨ 7 cosas que hago regularmente como desarrollador frontend senior",
+                    "La hoja de trucos definitiva de comandos de Linux para ingenieros y analistas de datos",
+                    "Elementos HTML5 que no sabías que necesitabas",
+                    "Conduit: Un sistema basado en nodos sin interfaz de usuario",
+                    "Construí un servidor MCP para DevTo (100% Open Source) 🎉",
+                    "De la idea al lanzamiento: una guía del desarrollador para crear tu primera startup",
+                    "El sueño sin servidor ha muerto",
+                    "Qwen 3 vs. Deepseek R1: Comparación completa",
+                    "Las 10 mejores herramientas de codificación de vibraciones que parecen mágicas en 2025",
+                ];
+                const contenedorTitulos = document.getElementById("titulosAleatorios");
+                const cantTitulos = 10;
+                const seleccionados = [...titulos].sort(() => 0.5 - Math.random()).slice(0, cantTitulos);
+
+                seleccionados.forEach(titulo => {
+                    const p = document.createElement("p");
+                    p.classList.add("titulo");
+                    p.textContent = titulo;
+                    contenedorTitulos.appendChild(p);
+                });
+            </script>
+        </div>
+    </div>
+
+    <script src="reacciones.js" defer></script>
+</body>
+</html>
