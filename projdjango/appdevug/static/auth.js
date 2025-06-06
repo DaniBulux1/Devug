@@ -11,7 +11,7 @@ const provider = new GoogleAuthProvider();
 function signInWithGoogle() {
     signInWithPopup(auth, provider)
     .then(() => {
-      window.location.href = "home.html";
+      window.location.href = "/home/";
     })
     .catch((error) => {
       alert("Error: " + error.message);
@@ -20,7 +20,7 @@ function signInWithGoogle() {
 
 function logOut() {
   signOut(auth).then(() => {
-    window.location.href = "index.html";
+    window.location.href = "/index/";
   });
 }
 
