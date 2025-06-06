@@ -1,13 +1,14 @@
 <!-- Karen Reyes -->
- 
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="auth.js" defer type="module"></script>
-    <link rel="stylesheet" href="index.css">
+    {% load static %}
+    <script src="{% static 'auth.js' %}" defer type="module"></script>
+    <link rel="stylesheet" href="{% static 'estilos.css' %}">
     <title>Devug</title>
 </head>
 
@@ -16,7 +17,6 @@
         <div class="izquierda">
             <p>Devug</p>
         </div>
-
         <div class="centro">
             <form class="busqueda" action="resultados.html" method="GET">
                 <input type="search" name="q" class="buscador" placeholder="Buscar...">
@@ -72,12 +72,13 @@
                 </div>
             </div>
             {% empty %}
-                <p>No hay tutoriales disponibles.</p>
+            <p>No hay tutoriales disponibles.</p>
             {% endfor %}
         </div>
 
         <div class="seccion3">
             <h3>Recursos en tendencia</h3>
+            <div id="titulosAleatorios"></div>
             <script src="../static/titulosAleatorios.js" defer></script>
         </div>
     </div>

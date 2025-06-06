@@ -6,9 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="auth.js" defer type="module"></script>
+        {% load static %}
+<script src="{% static 'auth.js' %}" defer type="module"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../static/estilos.css">
     <title>Devug</title>
 </head>
 
@@ -89,10 +90,11 @@
         <link rel="stylesheet" href="preview.html">
         <div class="seccion3">
             <h3>Recursos en tendencia</h3>
+            <div id="titulosAleatorios"></div>
             <script src="../static/titulosAleatorios.js" defer></script>
         </div>
     </div>
 
-    <script src="reacciones.js" defer></script>
+    <script src="../static/reacciones.js" defer></script>
 </body>
 </html>
