@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        Preview post
+        {% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}
     </title>
 </head>
 <body>
     <div class="container">
-        <h1>Preview post</h1>
+        <h1>{% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}</h1>
         <div class="date-display">
             Fecha de creación: <span id="currentDate"></span>
         </div>
