@@ -9,11 +9,11 @@
     <div class="container">
         <h1>Detalle del Tutorial</h1>
         <div class="tutorial-display">
-            <h2 class="tutorial-title">{{ tutorial.titulo }}</h2>
-            <div class="tutorial-content">
+            <h2 id="previewTitle" class="tutorial-title">{{ tutorial.titulo }}</h2>
+            <div id="previewContent" class="tutorial-content">
                 {{ tutorial.contenido|safe }} {# Usar 'safe' para renderizar el HTML #}
             </div>
-            <div class="tutorial-meta">
+            <div id="previewDate" class="tutorial-meta">
                 {% if tutorial.autor_foto_url %}
                     <img src="{{ tutorial.autor_foto_url }}" alt="Foto de {{ tutorial.autor_nombre }}">
                 {% endif %}
@@ -22,11 +22,42 @@
         </div>
 
         <div class="actions">
-            <!-- El botón de editar redirige a la vista de edición, pasando el PK del tutorial -->
-            <button class="edit-button" onclick="window.location.href='{% url 'editar_tutorial' pk=tutorial.pk %}'">Editar</button>
-            <!-- El botón "Publicar Tutorial" ahora redirige a la lista de tutoriales, ya que el post ya está guardado -->
+            {% if tutorial %} {# Solo renderiza el botón si 'tutorial' existe #}
+                <button class="edit-button" onclick="window.location.href='{% url 'editar_tutorial' pk=tutorial.pk %}'">Editar</button>
+            {% else %}
+                <button class="edit-button" disabled>Editar (Tutorial no encontrado)</button>
+            {% endif %}
             <button class="view-all-button" onclick="window.location.href='{% url 'lista_tutoriales' %}'">Ver todos los Tutoriales</button>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const titleColor = localStorage.getItem('tutorialTitleColor');
+            const titleFontFamily = localStorage.getItem('tutorialTitleFontFamily');
+            const postTextColor = localStorage.getItem('tutorialContentTextColor');
+            const postFontSize = localStorage.getItem('tutorialContentFontSize');
+            const postFontFamily = localStorage.getItem('tutorialContentFontFamily');
+
+            const previewTitle = document.getElementById('previewTitle');
+            if (previewTitle && titleColor) {
+                previewTitle.style.color = titleColor;
+            }
+            if (previewTitle && titleFontFamily) {
+                previewTitle.style.fontFamily = titleFontFamily;
+            }
+
+            const previewContent = document.getElementById('previewContent');
+            if (previewContent && postTextColor) {
+                previewContent.style.color = postTextColor;
+            }
+            if (previewContent && postFontSize) {
+                previewContent.style.fontSize = `${postFontSize}px`;
+            }
+            if (previewContent && postFontFamily) {
+                previewContent.style.fontFamily = postFontFamily;
+            }
+        });
+    </script>
 </body>
 </html>
