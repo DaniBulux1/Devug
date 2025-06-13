@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'estiloform.css' %}">
+    <link rel="icon" href="{% static 'icono.ico' %}" type="image/x-icon">
     <title>
         {% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}
     </title>
@@ -17,14 +20,14 @@
         <form method="post" action="{% if tutorial %}{% url 'editar_tutorial' pk=tutorial.pk %}{% else %}{% url 'crear_tutorial' %}{% endif %}" onsubmit="syncContent()">
             {% csrf_token %}
 
-            <input type="hidden" id="autor_uid" name="autor_uid" value="{% if tutorial %}{{ tutorial.autor_uid }}{% endif %}">
-            <input type="hidden" id="autor_nombre" name="autor_nombre" value="{% if tutorial %}{{ tutorial.autor_nombre }}{% endif %}">
-            <input type="hidden" id="autor_foto_url" name="autor_foto_url" value="{% if tutorial %}{{ tutorial.autor_foto_url }}{% endif %}">
+            <input type="hidden" id="autor_uid" name="autor_uid" value="...">
+            <input type="hidden" id="autor_nombre" name="autor_nombre" value="Usuario Anónimo">
+            <input type="hidden" id="autor_foto_url" name="autor_foto_url" value="https://via.placeholder.com/150">
 
-            <div class="form-group">
-                <label for="id_titulo">{{ form.titulo.label }}:</label>
-                {{ form.titulo }}
-            </div>
+            <br><br>
+            <div class="controls-group">
+                <label for="id_titulo">Título: </label>{{ form.titulo }}
+            </div><br><br>
 
             <div class="controls-group">
                 <div>
@@ -42,10 +45,10 @@
                         <option value="Courier New, monospace">Courier New</option>
                     </select>
                 </div>
-            </div>
+            </div><br><br>
 
             <div class="form-group">
-                <label for="editor_contenido">{{ form.contenido.label }}:</label>
+                <label for="editor_contenido">Contenido:</label><br><br>
                 <div class="format-buttons">
                     <button type="button" onclick="formatText('bold')"><b>Negrita</b></button>
                     <button type="button" onclick="formatText('italic')"><i>Cursiva</i></button>
@@ -53,8 +56,8 @@
                 </div>
                 
                 <div id="editor_contenido" contenteditable="true" placeholder="Escribe el contenido aquí..." class="wysiwyg-editor"></div>
-                {{ form.contenido }}
-            </div>
+                <textarea id="id_contenido" name="contenido" hidden></textarea>
+            </div><br>
 
             <div class="controls-group">
                 <div>
@@ -76,7 +79,7 @@
                         <option value="Courier New, monospace">Courier New</option>
                     </select>
                 </div>
-            </div>
+            </div><br><br>
 
             <button class="preview-button" type="submit">
                 {% if tutorial %}Guardar Cambios{% else %}Previsualizar y Guardar Tutorial{% endif %}
@@ -94,6 +97,13 @@
             const editorContentDiv = document.getElementById('editor_contenido');
             if (djangoContentTextarea && editorContentDiv) {
                 editorContentDiv.innerHTML = djangoContentTextarea.value;
+            }
+
+            //Generar uid aleatorio
+            let uidField = document.getElementById('autor_uid');
+            if (!uidField.value || uidField.value === '...') {
+                const randomUID = 'UID' + Math.random().toString(36).substring(2, 15);
+                uidField.value = randomUID;
             }
 
             if (localStorage.getItem('tutorialTitleColor')) {
@@ -119,7 +129,9 @@
                 localStorage.setItem('tutorialContentTextColor', document.getElementById('postTextColor').value);
                 localStorage.setItem('tutorialContentFontSize', document.getElementById('postFontSize').value);
                 localStorage.setItem('tutorialContentFontFamily', document.getElementById('postFontFamily').value);
+                return true; 
             }
+            return false;
         }
 
         function formatText(command) {
