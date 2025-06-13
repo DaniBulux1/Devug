@@ -18,7 +18,9 @@
         <div class="contenido">
             <img src="https://www.animatedvideo.com/blog/wp-content/uploads/2017/01/Creating_Online_Video_Courses_and_Tutorials-770x360.jpg" alt="">
             <h1>{{ tutorialPublicado.titulo }}</h1>
-            <p>{{ tutorialPublicado.contenido|safe }}</p>
+            <div class="tutorial-content">
+                {{ tutorialPublicado.contenido|safe }}
+            </div>       
 
             <div class="seccion-reaccion" tutorial-id="{{ tutorial.id }}">
                 <button class="btn-reaccion">👍 Reaccionar</button>
