@@ -5,7 +5,6 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-
 }
 
 /*Encabezado*/
@@ -20,50 +19,106 @@ body {
     padding-right: 2%;
 }
 
-  .encabezado .izquierda {
+.encabezado .izquierda {
     flex: 1;
-  }
+    display: flex;
+    align-items: center;
+}
 
-  .encabezado .centro {
+.encabezado .izquierda .logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.encabezado .centro {
     flex: 1;
     display: flex;
     justify-content: center;
-  }
+}
 
-  .encabezado .derecha {
+.encabezado .busqueda {
+    display: flex;
+    align-items: center;
+}
+
+.encabezado .buscador {
+    padding: 8px;
+    border: 2px solid #fff;
+    border-radius: 20px;
+    padding-left: 20px;
+}
+
+.encabezado .btn-buscar {
+    background-color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.encabezado .derecha {
     flex: 1;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-  }
+}
+
+.btnEncabezado {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 40px;
+    min-width: 150px;
+    box-sizing: border-box;
+    margin-left: 10px;
+    font-family: Poppins;
+    font-size: 12px;
+}
+
+.btnEncabezado img {
+    width: 20px;
+    height: auto;
+    margin-right: 8px; 
+}
+
+.btnEncabezado:hover {
+    background-color: #c9c9c9;
+    color: black;
+}
+
 .contenido {
     margin-top: 0%;
     border: 1px solid black;
     padding-top: 0%;
     display: flex;
     justify-content: space-between;
-align-items: stretch;
+    align-items: stretch;
     height: auto;
 }
 
 /*Sección de textos*/
 .seccion1 {
-    margin: 1%;
     width: 20%;
-    background: #f6f6f6;
-    box-shadow: 0 0 15px rgba(115, 114, 114, 0.3);
-    padding: 15px;
-    border-radius: 15px;
+    margin: 1%;
     height: 100%;
 }
 
 .seccion2 {
     width: 45%;
     margin: 1%;
-    background: #f6f6f6;
-    box-shadow: 0 0 15px rgba(115, 114, 114, 0.3);
-    padding: 15px;
-    border-radius: 8px;
     height: 100%;
 }
 
@@ -74,12 +129,39 @@ align-items: stretch;
     padding: 15px;
     border-radius: 15px;
     width: 30%;
+}
 
+.paginas, .tags, .informacion{
+    background: #f6f6f6;
+    box-shadow: 0 0 15px rgba(115, 114, 114, 0.3);
+    padding: 15px;
+    border-radius: 15px;
+    height: 100%;
 }
+
+.tutorial{
+    background: #f6f6f6;
+    box-shadow: 0 0 15px rgba(115, 114, 114, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.seccion2 .tutorial .autor{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.seccion2 .tutorial .autor img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
 /*Títulos y texto*/
-.titulo {
-    cursor: pointer;
-}
 .titulo:hover, a:hover{
     color: rgb(73, 73, 255);
 }
@@ -87,7 +169,6 @@ align-items: stretch;
 a{
     text-decoration: none;
     color: black;
-
 }
 
 /*Botones inicio de log in, log out y perfil*/
@@ -128,32 +209,6 @@ button,.btn-buscar:hover {
     color: rgb(0, 0, 0);
 }
 
-
-/*input*/
-.busqueda {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.buscador {
-  padding: 8px 35px;
-  border-radius: 20px;
-  border: none;
-  font-size: 14px;
-  width: 200px;
-}
-
-.btn-buscar {
-  background-color: white;
-  border: none;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
 img{
   border: none;
   border-radius: 40%;
@@ -164,82 +219,28 @@ img{
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-/* Contenedor principal para el botón de reaccionar y las reacciones */
 .seccion-reaccion {
     position: relative;
     display: inline-block;
     cursor: pointer;
 }
 
-/* Las reacciones están ocultas por defecto */
-.reacciones-ocultas {
-    display: none; /* Las reacciones están ocultas por defecto */
-    position: absolute;
-    top: 40px;
-    left: 0;
-    background: white;
-    padding: 8px 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    gap: 8px;
-    z-index: 100;
-    flex-direction: row; /* Reacciones en fila horizontal */
-}
-
-/* Mostrar las reacciones cuando el cursor pasa sobre el área de "Reaccionar" */
-.seccion-reaccion:hover .reacciones-ocultas {
-    display: flex;
-}
-
-/* Estilo de las opciones de reacciones */
-.react-option {
-    display: inline-block;
-    text-align: center;
+.opcion-reaccion {
     cursor: pointer;
-    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
-    position: relative;
-}
-
-/* Estilo del circulito donde aparece el emoji */
-.circulo-emoji {
-    display: inline-block;
-    font-size: 30px;
-    padding: 10px;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    width: 40px;
-    height: 40px;
-    line-height: 40px; /* Centra el emoji */
-    transition: transform 0.3s ease-in-out, background-color 0.3s ease;
-}
-
-/* Cuando se pasa el cursor sobre el emoji, hacer que suba */
-.react-option:hover .circulo-emoji {
-    transform: translateY(-5px); /* Desplazarse hacia arriba */
-    background-color: #f1f1f1; /* Color de fondo cuando está seleccionado */
-}
-
-/* Nombre de la reacción */
-.nombre-emoji {
+    user-select: none;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+    width: 30%;
     font-size: 12px;
-    color: #333;
-    display: block;
-    margin-top: 5px;
 }
 
-/* Estilo del botón de "Reaccionar" */
+.opcion-reaccion:hover {
+    background-color: #ffffff;
+    transform: translateY(-5px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .btn-reaccion {
     background: none;
     border: none;
@@ -248,14 +249,30 @@ img{
     padding: 10px;
     margin: 5px;
     color: #333;
-    display: inline-block;
     border-radius: 5px;
 }
 
-/* Estilo para mostrar la reacción seleccionada en el botón */
 .seccion-reaccion.selected .btn-reaccion {
     background-color: #f0f0f0;
     padding: 8px 12px;
     border-radius: 5px;
 }
 
+.reacciones-ocultas {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  gap: 8px;
+  z-index: 100;
+  display: none;
+  flex-direction: row;
+  background-color: #f0f0f0;
+  width: 350px;
+}
+
+.seccion-reaccion:hover .reacciones-ocultas {
+  display: flex;
+}

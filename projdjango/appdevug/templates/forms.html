@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
         {% if tutorial %}Editar Tutorial{% else %}Crear Nuevo Tutorial{% endif %}
-         - ProyectoFPW
     </title>
 </head>
 <body>
@@ -15,36 +14,70 @@
             Fecha de creación: <span id="currentDate"></span>
         </div>
 
-        <!-- El action del formulario es dinámico: si se edita, apunta a 'editar_tutorial' con el pk;
-             si se crea, apunta a 'crear_tutorial'. -->
-        <form method="post" action="{% if tutorial %}{% url 'editar_tutorial' pk=tutorial.pk %}{% else %}{% url 'crear_tutorial' %}{% endif %}">
-            {% csrf_token %} {# Token de seguridad requerido por Django para POST #}
+        <form method="post" action="{% if tutorial %}{% url 'editar_tutorial' pk=tutorial.pk %}{% else %}{% url 'crear_tutorial' %}{% endif %}" onsubmit="syncContent()">
+            {% csrf_token %}
 
-            <!-- Campos ocultos para la información del autor (se llenarán con JS desde Firebase Auth) -->
             <input type="hidden" id="autor_uid" name="autor_uid" value="{% if tutorial %}{{ tutorial.autor_uid }}{% endif %}">
             <input type="hidden" id="autor_nombre" name="autor_nombre" value="{% if tutorial %}{{ tutorial.autor_nombre }}{% endif %}">
             <input type="hidden" id="autor_foto_url" name="autor_foto_url" value="{% if tutorial %}{{ tutorial.autor_foto_url }}{% endif %}">
 
             <div class="form-group">
                 <label for="id_titulo">{{ form.titulo.label }}:</label>
-                <!-- Renderiza el campo 'titulo' del formulario de Django -->
                 {{ form.titulo }}
             </div>
 
+            <div class="controls-group">
+                <div>
+                    <label for="titleColor">Color del Título:</label>
+                    <input type="color" id="titleColor" value="#333333">
+                </div>
+                <div>
+                    <label for="titleFontFamily">Tipo de Letra (Título):</label>
+                    <select id="titleFontFamily">
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                        <option value="Helvetica, sans-serif">Helvetica</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Times New Roman, serif">Times New Roman</option>
+                        <option value="Courier New, monospace">Courier New</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label for="id_contenido">{{ form.contenido.label }}:</label>
+                <label for="editor_contenido">{{ form.contenido.label }}:</label>
                 <div class="format-buttons">
                     <button type="button" onclick="formatText('bold')"><b>Negrita</b></button>
                     <button type="button" onclick="formatText('italic')"><i>Cursiva</i></button>
                     <button type="button" onclick="formatText('code')"><code>Código</code></button>
                 </div>
-                <!-- Renderiza el campo 'contenido' del formulario de Django.
-                     El ID 'id_contenido' es el que Django asigna por defecto a un campo 'contenido'.
-                     Necesitamos que el JS de formato sepa que este es el elemento editable. -->
+                
+                <div id="editor_contenido" contenteditable="true" placeholder="Escribe el contenido aquí..." class="wysiwyg-editor"></div>
                 {{ form.contenido }}
             </div>
 
-            <!-- El botón ahora es de tipo submit para enviar el formulario -->
+            <div class="controls-group">
+                <div>
+                    <label for="postTextColor">Color del Texto (Contenido):</label>
+                    <input type="color" id="postTextColor" value="#000000">
+                </div>
+                <div>
+                    <label for="postFontSize">Tamaño de Letra (px) (Contenido):</label>
+                    <input type="number" id="postFontSize" value="16" min="10" max="48">
+                </div>
+                <div>
+                    <label for="postFontFamily">Tipo de Letra (Contenido):</label>
+                    <select id="postFontFamily">
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Verdana, sans-serif">Verdana</option>
+                        <option value="Helvetica, sans-serif">Helvetica</option>
+                        <option value="Georgia, serif">Georgia</option>
+                        <option value="Times New Roman, serif">Times New Roman</option>
+                        <option value="Courier New, monospace">Courier New</option>
+                    </select>
+                </div>
+            </div>
+
             <button class="preview-button" type="submit">
                 {% if tutorial %}Guardar Cambios{% else %}Previsualizar y Guardar Tutorial{% endif %}
             </button>
@@ -52,51 +85,63 @@
     </div>
 
     <script>
-        // Espera a que el DOM esté completamente cargado
         document.addEventListener('DOMContentLoaded', function() {
-            // Obtiene la fecha y hora actual
             const date = new Date();
-            // Define las opciones de formato para la fecha
             const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-            // Muestra la fecha formateada en el elemento con id 'currentDate'
             document.getElementById('currentDate').textContent = date.toLocaleDateString('es-ES', options);
 
-                onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        const displayName = user.displayName;
-                        const photoURL = user.photoURL;
+            const djangoContentTextarea = document.getElementById('id_contenido');
+            const editorContentDiv = document.getElementById('editor_contenido');
+            if (djangoContentTextarea && editorContentDiv) {
+                editorContentDiv.innerHTML = djangoContentTextarea.value;
+            }
 
-                        document.getElementById("autor-nombre").textContent = displayName;
-                        document.getElementById("autor-foto-url").src = photoURL;
-                }
-});
+            if (localStorage.getItem('tutorialTitleColor')) {
+                document.getElementById('titleColor').value = localStorage.getItem('tutorialTitleColor');
+                document.getElementById('titleFontFamily').value = localStorage.getItem('tutorialTitleFontFamily');
+                document.getElementById('postTextColor').value = localStorage.getItem('tutorialContentTextColor');
+                document.getElementById('postFontSize').value = localStorage.getItem('tutorialContentFontSize');
+                document.getElementById('postFontFamily').value = localStorage.getItem('tutorialContentFontFamily');
+            }
         });
 
-        // Función para aplicar formato al texto seleccionado en el área contenteditable
-        function formatText(command) {
-            // Asegúrate de que el ID del div contenteditable coincida con el ID de Django
-            const contentDiv = document.getElementById('id_contenido');
-            contentDiv.focus(); // Asegura que el div tenga el foco para execCommand
+        function syncContent() {
+            const editorContentDiv = document.getElementById('editor_contenido');
+            const djangoContentTextarea = document.getElementById('id_contenido');
+            if (editorContentDiv && djangoContentTextarea) {
+                djangoContentTextarea.value = editorContentDiv.innerHTML;
 
+                localStorage.setItem('tutorialTitle', document.getElementById('id_titulo').value);
+                localStorage.setItem('tutorialContent', editorContentDiv.innerHTML);
+                localStorage.setItem('creationDate', document.getElementById('currentDate').textContent);
+                localStorage.setItem('tutorialTitleColor', document.getElementById('titleColor').value);
+                localStorage.setItem('tutorialTitleFontFamily', document.getElementById('titleFontFamily').value);
+                localStorage.setItem('tutorialContentTextColor', document.getElementById('postTextColor').value);
+                localStorage.setItem('tutorialContentFontSize', document.getElementById('postFontSize').value);
+                localStorage.setItem('tutorialContentFontFamily', document.getElementById('postFontFamily').value);
+            }
+        }
+
+        function formatText(command) {
+            const editorContentDiv = document.getElementById('editor_contenido');
+            editorContentDiv.focus(); 
             if (command === 'bold') {
                 document.execCommand('bold', false, null);
             } else if (command === 'italic') {
                 document.execCommand('italic', false, null);
             } else if (command === 'code') {
-                // Para código, envolvemos la selección en <pre><code>
                 const selection = window.getSelection();
                 if (selection.rangeCount > 0) {
                     const range = selection.getRangeAt(0);
                     const selectedText = range.toString();
                     const codeElement = document.createElement('pre');
                     const codeInner = document.createElement('code');
-                    codeInner.textContent = selectedText; // Usamos textContent para escapar HTML dentro del código
+                    codeInner.textContent = selectedText;
                     codeElement.appendChild(codeInner);
 
-                    range.deleteContents(); // Elimina el texto seleccionado
-                    range.insertNode(codeElement); // Inserta el nuevo elemento de código
+                    range.deleteContents();
+                    range.insertNode(codeElement);
                 } else {
-                    // Si no hay selección, inserta un bloque de código vacío para que el usuario escriba
                     document.execCommand('insertHTML', false, '<pre><code></code></pre>');
                 }
             }
