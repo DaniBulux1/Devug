@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.container {
+    width: 80%;
+    height: auto;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: #f6f6f6;
+    box-shadow: 0 0 15px rgba(115, 114, 114, 0.3);
+}
+
+.container h1{
+    font-family: Poppins;
+    text-align: center;
+}
+
+.date-display {
+    font-size: 1rem;
+    color: #777;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="color"], input[type="number"], select, textarea, #editor_contenido {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #f6f6f6;
+    font-size: 1rem;
+}
+
+#editor_contenido {
+    min-height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    background: #fff;
+    font-size: 1rem;
+}
+
+.format-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.format-buttons button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.format-buttons button:hover {
+    background-color: #45a049;
+}
+
+.controls-group, .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.controls-group > div {
+    flex: 1;
+    min-width: 100px; 
+    box-sizing: border-box;
+}
+
+.controls-group label, .form-group label {
+    color: #000000;
+    margin-top: 15px;
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+}
+
+.controls-group input,
+.controls-group select {
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.controls-group #id_titulo{
+    width: 90%;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;   
+    gap: 10px;
+}
+
+.preview-button {
+    background-color: black;
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container .preview-button:hover{
+    background-color: #949494;
+}
+
+.form-group button{
+    background-color: black;
+    color: white; 
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.form-group button:hover {
+    background-color: #949494;
+}
