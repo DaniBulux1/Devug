@@ -7,27 +7,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
-    <script src="{% static 'auth.js' %}" defer type="module"></script>
+    <script src="{% static 'js/auth.js' %}" defer type="module"></script>
+    <script src="{% static 'js/reacciones.js' %}"></script>
     <link rel="stylesheet" href="{% static 'estilos.css' %}">
+    <link rel="icon" href="{% static 'icono.ico' %}" type="image/x-icon">
     <title>Devug</title>
 </head>
 
 <body>
     <div class="encabezado">
         <div class="izquierda">
+            <img src="{% static 'icono.png' %}" alt="Logo" class="logo">
             <p>Devug</p>
         </div>
         <div class="centro">
-            <form class="busqueda" action="resultados.html" method="GET">
+            <form class="busqueda" action="{% url 'lista_tutoriales' %}" method="GET">
                 <input type="search" name="q" class="buscador" placeholder="Buscar...">
                 <button type="submit" class="btn-buscar">
-                    <a href="#index">&#128270;</a>
+                    <a href="{% url 'lista_tutoriales' %}">&#128270;</a>
                 </button>
             </form>
         </div>
-
         <div class="derecha">
-            <button id="btn-google">
+            <a href="{% url 'crear_tutorial' %}" class="btnEncabezado">&#128161; <strong>Crear publicación</strong></a>
+            <button id="btn-google" class="btnEncabezado">
                 <img src="https://storage.googleapis.com/libraries-lib-production/images/GoogleLogo-canvas-404-300px.original.png"
                     alt="Google logo">
                 Iniciar sesión
@@ -35,51 +38,74 @@
         </div>
     </div>
 
-
     <div class="contenido">
         <div class="seccion1">
-            <a href="index.html">&#127968; Inicio</a><br>
-            <a href="index.html">&#127908; Podcast</a><br>
-            <a href="index.html">&#127909; Videos</a><br>
-            <a href="index.html">&#128204; Etiquetas</a><br>
-            <a href="index.html">&#128187; Comparaciones de Software</a><br>
-            <a href="index.html">&#128521; Bases de datos gratuitas</a><br>
-            <a href="index.html">&#128640; DEVUVG ++</a><br>
-            <a href="index.html">&#10024; Ayuda de DEVUVG</a><br>
-            <a href="index.html">&#129505; Anunciate en DEVUVG</a><br>
-            <a href="index.html">&#127941; Desafíos de DEVUVG</a><br>
-            <p>Otros</p>
-            <a href="index.html">&#128588; Código de Conducta</a><br>
-            <a href="index.html">&#129299; Politicas de Privacidad</a><br>
-            <a href="index.html">&#127968; Términos de Uso</a><br>
-            <a href="index.html">&#128526; Sobre Nosotros</a><br>
+            <div class="paginas">
+                <p><strong>Páginas principales</strong></p>
+                <a href="{% url 'lista_tutoriales' %}">&#127968; Inicio</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#127908; Podcast</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#127909; Videos</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#128204; Etiquetas</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#128187; Comparaciones de Software</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#128521; Bases de datos gratuitas</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#128640; DEVUVG ++</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#10024; Ayuda de DEVUVG</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#129505; Anunciate en DEVUVG</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#127941; Desafíos de DEVUVG</a><br>
+                <br><p><strong>Otros</strong></p>
+                <a href="{% url 'lista_tutoriales' %}">&#128588; Código de Conducta</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#129299; Politicas de Privacidad</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#127968; Términos de Uso</a><br>
+                <a href="{% url 'lista_tutoriales' %}">&#128526; Sobre Nosotros</a><br>
+            </div><br>
+            <div class="tags">
+                <p><strong>Tags populares</strong></p>
+                <a href="{% url 'lista_tutoriales' %}">#programacion</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#tutorial</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#javascript</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#c++</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#python</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#Inicio</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#php</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#opensource</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#frontend</a><br>
+                <a href="{% url 'lista_tutoriales' %}">#backend</a><br>
+            </div><br>
+            <div class="informacion">
+                <h4>¿Cuál es la forma más sencilla de ayudar a que la comunidad DEVUG se sienta más como una comunidad?</h4>
+                <p>¡Visita nuestro hilo de bienvenida para saludar a algunos nuevos miembros de DEVUG! <br> </BR>Comunidad DEVUG Un espacio para discutir y mantenerse al día con el desarrollo de software y gestionar su carrera de software. <br><br>Comunidad DEVUG © 2025</p>
+            </div>
         </div>
 
         <div class="seccion2">
             {% for tutorial in tutoriales %}
-            <div class="tutorial">
-                <div class="autor">
-                    <p>Autor: {{ tutorial.autor_nombre }}</p>
+                <div class="tutorial">
+                    <div class="autor">
+                        <img src="{{ 'https://static.vecteezy.com/system/resources/previews/020/911/748/non_2x/user-profile-icon-profile-avatar-user-icon-male-icon-face-icon-profile-icon-free-png.png' }}" >
+                        <p>{{ tutorial.autor_nombre }} - {{ tutorial.fecha_creacion|date:"d M Y" }}</p>
+                    </div>
+                    <div class="titulo">
+                        <a href="{% url 'detalle_tutorialPublicado' pk=tutorial.pk %}"><h2>{{ tutorial.titulo }}</h2></a>
+                    </div>
+                    <div class="seccion-reaccion" tutorial-id="{{ tutorial.id }}">
+                        <button class="btn-reaccion">👍 Reaccionar</button>
+                        <div class="reacciones-ocultas">
+                            <span class="opcion-reaccion" emoji-id="like">👍 <span class="nombre-emoji">Me gusta</span></span>
+                            <span class="opcion-reaccion" emoji-id="wow">😲 <span class="nombre-emoji">Me asombra</span></span>
+                            <span class="opcion-reaccion" emoji-id="love">❤️ <span class="nombre-emoji">Me encanta</span></span>
+                        </div>
+                        <div class="conteo-reacciones" id="conteo-{{ tutorial.id }}"></div>
+                    </div>
                 </div>
-                <div class="titulo">
-                    <p>Título: {{ tutorial.titulo }}</p>
-                </div>
-                <div class="tags">
-                    <p>Sección de tags</p>
-                </div>
-                <div class="reacciones">
-                    <p>Sección de reacciones</p>
-                </div>
-            </div>
             {% empty %}
-            <p>No hay tutoriales disponibles.</p>
+                <p>No hay tutoriales disponibles</p>
             {% endfor %}
         </div>
 
         <div class="seccion3">
             <h3>Recursos en tendencia</h3>
             <div id="titulosAleatorios"></div>
-            <script src="../static/titulosAleatorios.js" defer></script>
+            <script src="../static/js/titulosAleatorios.js" defer></script>
         </div>
     </div>
 </body>
