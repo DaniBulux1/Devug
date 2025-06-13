@@ -114,7 +114,7 @@ input[type="color"], input[type="number"], select, textarea, #editor_contenido {
     cursor: pointer;
 }
 
-.container .preview-button:hover{
+.container .preview-button:hover, .form-group button:hover{
     background-color: #949494;
 }
 
@@ -127,8 +127,4 @@ input[type="color"], input[type="number"], select, textarea, #editor_contenido {
     cursor: pointer;
     font-size: 12px;
     margin-right: 10px;
-}
-
-.form-group button:hover {
-    background-color: #949494;
 }
