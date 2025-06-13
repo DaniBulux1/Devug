@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const btnReaccion = seccionReaccion.querySelector('.btn-reaccion');
       const tutorialID = seccionReaccion.getAttribute('tutorial-id');
       const nombreEmoji = option.querySelector('.nombre-emoji').textContent;
+      const randomUID = 'UID' + Math.random().toString(36).substring(2, 15);
 
       //Cambiar a texto
       btnReaccion.textContent = `${simbolos[emoji]} ${nombreEmoji}`;
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify({
           tutorial_id: tutorialID,
           emoji: emoji,
-          usuario_uid: '123456789'
+          usuario_uid: randomUID
         })
       })
       .then(response => response.json())
